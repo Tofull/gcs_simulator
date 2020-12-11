@@ -1,4 +1,5 @@
 bump2version
+google-cloud-storage==1.32.0  # used to test the example
 pre-commit
 pytest
 pytest-cov
