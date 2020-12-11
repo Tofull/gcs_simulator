@@ -12,7 +12,7 @@ with open("requirements.txt") as requirements_file:
 
 setup(
     name="gcs_simulator",
-    version="0.0.0",
+    version="0.0.1",
     description="Simulator of Google Cloud Storage python API using local folder as 'bucket'.",
     long_description=readme,
     author="Loïc Messal",
