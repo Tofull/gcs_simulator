@@ -3,15 +3,33 @@ from pathlib import Path
 
 class MockClient(object):
     def __init__(self):
-        pass
+        self._root_folder = None
 
+    def set_local_root_folder_used_for_simulation(self, root_folder: str):
+        assert Path(root_folder).is_dir()
+        assert Path(root_folder).exists()
+        self._root_folder = root_folder
+
+    def _requires_root_folder(fn):
+        def _validate_root_folder(self, *args, **kwargs):
+            if self._root_folder is None:
+                raise RuntimeError(
+                    "Missing required root folder to use the Google Storage simulator. "
+                    "Please call `set_local_root_folder_used_for_simulation('any_local_folder_path')` "
+                    "to use the folder 'any_local_folder_path' as a root for the Google Storage simulator."
+                )
+            return fn(self, *args, **kwargs)
+
+        return _validate_root_folder
+
+    @_requires_root_folder
     def bucket(self, bucket_name: str):
-        return MockBucket(bucket_name)
+        return MockBucket(bucket_name, root_folder=self._root_folder)
 
 
 class MockBucket(object):
-    def __init__(self, bucket_name: str):
-        self._bucket_path = Path(bucket_name)
+    def __init__(self, bucket_name: str, root_folder: str):
+        self._bucket_path = Path(root_folder) / bucket_name
         assert self._bucket_path.is_dir()
         assert self._bucket_path.exists()
 
