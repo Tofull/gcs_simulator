@@ -4,13 +4,6 @@ from typing import Optional
 import uuid
 import sys
 
-example_folder = Path(__file__).parent
-
-# TODO(tofull): remove this once setup.py has been written
-# hack to add gcs_simulator in PATH.
-gcs_simulator_src = example_folder / ".." / "src"
-sys.path.insert(0, gcs_simulator_src.resolve().absolute().as_posix())
-
 from google.cloud import storage
 
 
